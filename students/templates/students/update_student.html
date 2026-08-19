@@ -1,0 +1,117 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Student</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f8;
+        }
+
+        .form-box {
+            width: 500px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background: #0d6efd;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .back {
+            margin-left: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="form-box">
+
+    <h2>Update Student</h2>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <label>Student ID</label>
+        <input type="text"
+               name="student_id"
+               value="{{ student.student_id }}"
+               required>
+
+        <label>Name</label>
+        <input type="text"
+               name="name"
+               value="{{ student.name }}"
+               required>
+
+        <label>Email</label>
+        <input type="email"
+               name="email"
+               value="{{ student.email }}"
+               required>
+
+        <label>Phone</label>
+        <input type="text"
+               name="phone"
+               value="{{ student.phone }}"
+               required>
+
+        <label>Course</label>
+
+        <select name="course" required>
+
+            {% for course in courses %}
+
+                <option value="{{ course.id }}"
+                    {% if student.course.id == course.id %}
+                        selected
+                    {% endif %}>
+                    {{ course.course_name }}
+                </option>
+
+            {% endfor %}
+
+        </select>
+
+        <label>Date of Birth</label>
+        <input type="date"
+               name="date_of_birth"
+               value="{{ student.date_of_birth|date:'Y-m-d' }}"
+               required>
+
+        <label>Address</label>
+        <textarea name="address" required>{{ student.address }}</textarea>
+
+        <button type="submit">
+            Update Student
+        </button>
+
+        <a class="back" href="{% url 'home' %}">
+            Back
+        </a>
+
+    </form>
+
+</div>
+
+</body>
+</html>
+```
