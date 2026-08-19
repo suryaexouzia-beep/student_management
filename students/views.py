@@ -2,14 +2,18 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.db.models import Count
 from .models import Student, Course
+from django.shortcuts import render, get_object_or_404, redirect
+from .models import Student, Course
 
 
 def home(request):
     students = Student.objects.all()
+    courses = Course.objects.all()
 
-    courses = Course.objects.annotate(
-        student_count=Count("students")
-    )
+    course_id = request.GET.get("course")
+
+    if course_id:
+        students = students.filter(course_id=course_id)
 
     return render(
         request,
@@ -17,8 +21,10 @@ def home(request):
         {
             "students": students,
             "courses": courses,
+            "selected_course": course_id,
         }
     )
+
 
 
 def update_student(request, id):
