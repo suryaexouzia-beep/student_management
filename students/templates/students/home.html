@@ -1,73 +1,371 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Student Management System</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            color: #333;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: #1e293b;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar h1 {
+            font-size: 24px;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            background: #2563eb;
+            padding: 10px 18px;
+            border-radius: 7px;
+        }
+
+        .navbar a:hover {
+            background: #1d4ed8;
+        }
+
+        /* Main */
+        .container {
+            width: 92%;
+            max-width: 1200px;
+            margin: 35px auto;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h2 {
+            font-size: 30px;
+            color: #1e293b;
+        }
+
+        .welcome p {
+            color: #64748b;
+            margin-top: 7px;
+        }
+
+        /* Cards */
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        .card h3 {
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        .card .number {
+            font-size: 32px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #2563eb;
+        }
+
+        /* Search */
+        .top-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .top-section h2 {
+            color: #1e293b;
+        }
+
+        .search {
+            padding: 11px 15px;
+            width: 260px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            outline: none;
+        }
+
+        .search:focus {
+            border-color: #2563eb;
+        }
+
+        /* Table */
+        .table-container {
+            background: white;
+            overflow-x: auto;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f1f5f9;
+            color: #475569;
+            padding: 15px;
+            text-align: left;
+        }
+
+        td {
+            padding: 15px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        tr:hover {
+            background: #f8fafc;
+        }
+
+        .course {
+            background: #dbeafe;
+            color: #1d4ed8;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 13px;
+        }
+
+        .edit {
+            background: #16a34a;
+            color: white;
+            padding: 7px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+        }
+
+        .delete {
+            background: #dc2626;
+            color: white;
+            padding: 7px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-size: 13px;
+            margin-left: 5px;
+        }
+
+        /* Empty */
+        .empty {
+            text-align: center;
+            padding: 40px;
+            color: #64748b;
+        }
+
+        /* Mobile */
+        @media (max-width: 800px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+
+            .top-section {
+                flex-direction: column;
+                gap: 15px;
+                align-items: stretch;
+            }
+
+            .search {
+                width: 100%;
+            }
+
+            .navbar {
+                padding: 15px 20px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<h1>Student Management System</h1>
+    <!-- Navbar -->
+    <div class="navbar">
+        <h1>🎓 Student Management</h1>
 
-<h2>Course Wise Student Count</h2>
+        <a href="/admin/">Admin Panel</a>
+    </div>
 
-<table border="1" cellpadding="10">
-    <tr>
-        <th>Course</th>
-        <th>Number of Students</th>
-    </tr>
+    <div class="container">
 
-    {% for course in courses %}
-    <tr>
-        <td>{{ course.name }}</td>
-        <td>{{ course.student_count }}</td>
-    </tr>
-    {% empty %}
-    <tr>
-        <td colspan="2">No courses available</td>
-    </tr>
-    {% endfor %}
-</table>
+        <!-- Welcome -->
+        <div class="welcome">
+            <h2>Student Dashboard</h2>
+            <p>Manage and view all student information</p>
+        </div>
+
+        <!-- Dashboard Cards -->
+        <div class="cards">
+
+            <div class="card">
+                <h3>Total Students</h3>
+                <div class="number">{{ students|length }}</div>
+            </div>
+
+            <div class="card">
+                <h3>Total Courses</h3>
+                <div class="number">{{ courses|length }}</div>
+            </div>
+
+            <div class="card">
+                <h3>System Status</h3>
+                <div class="number">Active</div>
+            </div>
+
+        </div>
+
+        <!-- Student Table -->
+        <div class="top-section">
+            <h2>Student Details</h2>
+
+            <input
+                type="text"
+                id="searchInput"
+                class="search"
+                placeholder="Search students..."
+                onkeyup="searchStudents()"
+            >
+        </div>
+
+        <div class="table-container">
+
+            <table id="studentTable">
+
+                <thead>
+                    <tr>
+                        <th>Student ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Phone</th>
+                        <th>Course</th>
+                        <th>Date of Birth</th>
+                        <th>Address</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for student in students %}
+
+                    <tr>
+
+                        <td>{{ student.student_id }}</td>
+
+                        <td>
+                            <strong>{{ student.name }}</strong>
+                        </td>
+
+                        <td>{{ student.email }}</td>
+
+                        <td>{{ student.phone }}</td>
+
+                        <td>
+                            {% if student.course %}
+                                <span class="course">
+                                    {{ student.course.name }}
+                                </span>
+                            {% else %}
+                                <span>Not assigned</span>
+                            {% endif %}
+                        </td>
+
+                        <td>{{ student.date_of_birth }}</td>
+
+                        <td>{{ student.address }}</td>
+
+                        <td>
+                            <a
+                                href="{% url 'update_student' student.id %}"
+                                class="edit"
+                            >
+                                Edit
+                            </a>
+
+                            <a
+                                href="{% url 'delete_student' student.id %}"
+                                class="delete"
+                            >
+                                Delete
+                            </a>
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+                        <td colspan="8" class="empty">
+                            No students found.
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
 
 
-<h2>Student Details</h2>
+    <script>
 
-<table border="1" cellpadding="10">
-    <tr>
-        <th>Student ID</th>
-        <th>Name</th>
-        <th>Email</th>
-        <th>Phone</th>
-        <th>Course</th>
-        <th>Date of Birth</th>
-        <th>Address</th>
-        <th>Action</th>
-    </tr>
+        function searchStudents() {
 
-    {% for student in students %}
-    <tr>
-        <td>{{ student.student_id }}</td>
-        <td>{{ student.name }}</td>
-        <td>{{ student.email }}</td>
-        <td>{{ student.phone }}</td>
-        <td>{{ student.course }}</td>
-        <td>{{ student.date_of_birth }}</td>
-        <td>{{ student.address }}</td>
-        <td>
-            <a href="{% url 'update_student' student.id %}">Update</a>
-            |
-            <a href="{% url 'delete_student' student.id %}">Delete</a>
-        </td>
-    </tr>
+            let input = document
+                .getElementById("searchInput")
+                .value
+                .toLowerCase();
 
-    {% empty %}
-    <tr>
-        <td colspan="8">No students available</td>
-    </tr>
-    {% endfor %}
+            let rows = document
+                .getElementById("studentTable")
+                .getElementsByTagName("tbody")[0]
+                .getElementsByTagName("tr");
 
-</table>
+            for (let i = 0; i < rows.length; i++) {
+
+                let text = rows[i].textContent.toLowerCase();
+
+                if (text.includes(input)) {
+                    rows[i].style.display = "";
+                } else {
+                    rows[i].style.display = "none";
+                }
+            }
+        }
+
+    </script>
 
 </body>
 </html>
-```
