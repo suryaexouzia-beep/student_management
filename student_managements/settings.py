@@ -24,7 +24,7 @@ SECRET_KEY = 'django-insecure-!@a-sc_n2q-w(!9gj0q5q3r8#eb^)8i87g@dvvo*vj1c7!za^!
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
+CORS_ALLOW_ALL_ORIGINS = True
 ALLOWED_HOSTS = []
 
 
@@ -37,10 +37,15 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
- 'students',
+
+    'corsheaders',
+    'rest_framework',
+    'students',
 ]
 
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -49,7 +54,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
-
 ROOT_URLCONF = 'student_managements.urls'
 
 TEMPLATES = [
