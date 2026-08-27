@@ -1,4 +1,4 @@
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -67,63 +67,85 @@
             margin-top: 7px;
         }
 
-        /* Cards */
-        .cards {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
-        }
+        .welcome-image {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 15px;
+}
+.card {
+    width: 250px;
+    padding: 20px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    margin-bottom: 25px;
+}
 
-        .card {
-            background: white;
-            padding: 25px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
+.card h3 {
+    margin: 0 0 10px;
+    color: #333;
+}
 
-        .card h3 {
-            color: #64748b;
-            font-size: 15px;
-        }
+.number {
+    font-size: 35px;
+    font-weight: bold;
+    color: #2563eb;
+}
 
-        .card .number {
-            font-size: 32px;
-            font-weight: bold;
-            margin-top: 10px;
-            color: #2563eb;
-        }
 
-        /* Course Filter */
-        .filter-form {
-            background: white;
-            padding: 18px 20px;
-            margin-bottom: 20px;
-            border-radius: 12px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+/* Course Filter */
 
-        .filter-form label {
-            font-weight: bold;
-            color: #1e293b;
-        }
+.filter-form {
+    margin: 20px 0;
+}
 
-        .filter-form select {
-            padding: 10px 35px 10px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 7px;
-            font-size: 15px;
-            background: white;
-            cursor: pointer;
-            outline: none;
-        }
+.filter-form label {
+    font-size: 16px;
+    font-weight: 600;
+    margin-right: 10px;
+}
 
-        .filter-form select:focus {
-            border-color: #2563eb;
-        }
+.filter-form select {
+    padding: 10px 15px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 15px;
+    background: white;
+    cursor: pointer;
+}
+
+
+/* Course Image */
+
+.course-images {
+    margin-top: 30px;
+}
+
+.course-card {
+    width: 350px;
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+.course-card img {
+    width: 18%;
+    height: 28px;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+}
+
+.course-card h3 {
+    margin: 15px 0 5px;
+    color: #333;
+    font-size: 20px;
+}
 
         /* Search */
         .top-section {
@@ -264,6 +286,12 @@
         <!-- Welcome -->
         <div class="welcome">
 
+            <img
+                src="{% static 'images/rono.png' %}"
+                alt="Student Management"
+                class="welcome-image"
+            >
+
             <h2>Student Dashboard</h2>
 
             <p>
@@ -286,65 +314,72 @@
 
             </div>
 
+<!-- Total Courses -->
+<div class="card">
+    <h3>Total Courses</h3>
 
-            <div class="card">
-
-                <h3>Total Courses</h3>
-
-                <div class="number">
-                    {{ courses|length }}
-                </div>
-
-            </div>
+    <div class="number">
+        {{ courses|length }}
+    </div>
+</div>
 
 
-            <div class="card">
+<!-- Course Filter -->
+<form method="GET" class="filter-form">
 
-                <h3>System Status</h3>
+    <label for="course">
+        Filter by Course:
+    </label>
 
-                <div class="number">
-                    Active
-                </div>
+    <select
+        name="course"
+        id="course"
+        onchange="this.form.submit()"
+    >
 
-            </div>
+        <option value="">
+            All Courses
+        </option>
 
-        </div>
-
-
-        <!-- Course Filter -->
-        <form method="GET" class="filter-form">
-
-            <label for="course">
-                Filter by Course:
-            </label>
-
-            <select
-                name="course"
-                id="course"
-                onchange="this.form.submit()"
+        {% for course in courses %}
+            <option
+                value="{{ course.id }}"
+                {% if selected_course == course.id|stringformat:"s" %}
+                    selected
+                {% endif %}
             >
+                {{ course.name }}
+            </option>
+        {% endfor %}
 
-                <option value="">
-                    All Courses
-                </option>
+    </select>
 
-                {% for course in courses %}
+</form>
 
-                    <option
-                        value="{{ course.id }}"
-                        {% if selected_course == course.id|stringformat:"s" %}
-                            selected
-                        {% endif %}
-                    >
-                        {{ course.name }}
-                    </option>
 
-                {% endfor %}
+<!-- Course Images -->
+<div class="course-images">
 
-            </select>
+    {% for course in courses %}
 
-        </form>
+        {% if selected_course == course.id|stringformat:"s" %}
 
+            <div class="course-card">
+
+                <img
+                    src="{% static 'images/bca.png' %}"
+                    alt="{{ course.name }}"
+                >
+
+                <h3>{{ course.name }}</h3>
+
+            </div>
+
+        {% endif %}
+
+    {% endfor %}
+
+</div>
 
         <!-- Student Table Header -->
         <div class="top-section">
@@ -512,8 +547,6 @@
                 .getElementsByTagName("tbody")[0]
                 .getElementsByTagName("tr");
 
-                
-
             for (let i = 0; i < rows.length; i++) {
 
                 let text = rows[i]
@@ -538,4 +571,3 @@
 
 </body>
 </html>
-```
